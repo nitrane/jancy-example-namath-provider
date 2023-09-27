@@ -3,7 +3,7 @@ let myMessageAPI = null
 
 const MyNamathExampleProviderFactory = {
   id: '69c30bd7-0ae7-4d2e-9517-69414d850a42', //generate a uuid that you want
-  description: 'Create a Namath Instance that sends to MyNamthExample', //this text shows up in Namath when users click the '+' button to add a provider
+  description: 'Create a Namath Instance that sends to MyNamathExample', //this text shows up in Namath when users click the '+' button to add a provider
   showFactoriesToUser: true,
   persistProviders: true,
   createProvider(jancy, state=null) {

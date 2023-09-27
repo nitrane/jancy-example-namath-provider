@@ -13,7 +13,8 @@
 3. Restart Jancy if it's already running.
 4. If everything works correctly you should see the example plugin in the list of plugins in `File -> Settings -> Plugins`.
 5. Go to the Namath settings panel (`File -> Setting -> Namath`)
-6. Click the + button and select the "Create a Namath Instance that sends to MyNamthExample" option
-7. In the dialog that appears type in a URL and a Name. You can make these values up. They're aren't used for anything important.
+6. Click the + button and select the "Create a Namath Instance that sends to MyNamathExample" option
+7. In the dialog that appears type in a Key and a Name. You will have to edit the dialog code to have the fields you want for your setup.
 8. Press the "Add" button.
 9. If all works correctly, you should see an entry for the provider instance you just created. You can press the test button to see if it works
+10. You can go to TicketMaster and use Namath as you would normally and send to your provider
