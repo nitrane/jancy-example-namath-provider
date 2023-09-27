@@ -1,0 +1,6 @@
+{
+  "name": "example-namath-provider",
+  "version": "0.0.1",
+  "description": "An example Jancy Namath provider plugin",
+  "main": "src/index.js"
+}
