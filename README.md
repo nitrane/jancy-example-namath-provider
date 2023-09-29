@@ -1,4 +1,4 @@
-# Jancy Example Proxy Provider
+# Jancy Example Namath Provider
 
 ## Structure of the Plug-in
 - `example-namath-provider/package.json` - A simple file that describes the plugin to Jancy and specifies an entry point. `src/index.js` in this example.
@@ -18,3 +18,65 @@
 8. Press the "Add" button.
 9. If all works correctly, you should see an entry for the provider instance you just created. You can press the test button to see if it works
 10. You can go to TicketMaster and use Namath as you would normally and send to your provider
+
+# Data Structures
+
+## Cart
+
+The cart is an object the you will be using to get the data for your service
+### Properties that will change in 1.4.6
+* `feesPerTicket` will be renamed to `feesPerSeat` to more accurately communicate what it is
+* `feeAndCostPerTicket` will be renamed to `feeAndCostPerSeat` to more accurately communicate what it is
+* `costPerTicket` will be renamed to `costPerSeat` to more accurately communicate what it is
+### Properties
+
+#### uuid
+The unique identifier for the cart.
+#### isApproved
+Whether or not the cart has been approved.
+#### isWaiting
+Whether or not the cart is waiting to be processed.
+#### cartUpdated
+The timestamp of the last time the cart was updated.
+#### fieldColors
+An object that maps field names to colors. Mostly used internally, but you can use it.
+#### tab
+The tab ID that the cart is associated with.
+#### row
+The row number of the seats in the cart.
+#### section
+The section number of the seats in the cart.
+#### seats
+A comma-separated list of the seat numbers in the cart.
+#### event
+The name of the event in the cart.
+#### venue
+The name of the venue where the event is taking place.
+#### quantity
+The number of seats for all tickets in the cart.
+#### currency
+The currency of the cart (USD, CAN, etc).
+#### total
+The total price of the cart, includes fees and taxes.
+#### fees
+The total amount of fees associated with the tickets in the cart.
+#### tax
+The total amount of tax associated with the tickets in the cart.
+#### costPerTicket
+The cost of each seat in the cart, excluding fees and tax.
+#### dateTime
+The date and time of the event in the cart.
+#### oddEven
+Whether or not the row number of the seats in the cart is odd or even.
+#### deliveryMethod
+The delivery method for the tickets in the cart.
+#### isInsured
+Whether or not the tickets in the cart are insured.
+#### marketplace
+The marketplace where the tickets in the cart were purchased.
+#### feeAndCostPerTicket
+The total cost of each seat in the cart, including fees and taxes.
+#### ticketType
+The type of ticket in the cart.
+#### feesPerTicket
+The amount of fees associated with each seat in the cart.

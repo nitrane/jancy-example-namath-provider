@@ -18,6 +18,37 @@ const MyNamathExampleProviderFactory = {
 }
 
 /**
+ ** Cart object is an object that is sent to the provider to be handled
+ * {
+ *   "uuid": "b2650836-b281-4ea5-9474-89312cbe8f51",
+ *   "isApproved": null, // this is a flag that indicates that the cart has been approved by the quarterback
+ *   "isWaiting": true, // this is a flag that indicates that the cart is waiting for a response from the quarterback
+ *   "cartUpdated": new Date(), // this is a date object that indicates when the cart was last updated
+ *   "fieldColors": {}, // this is an object that contains the colors of the fields in the cart, mostly internal
+ *   "tab": "d7700243", // this is the tab id that the cart was sent from
+ *   "row": null, //  the rows of the tickets in the cart
+ *   "section": null, // the section of the tickets in the cart
+ *   "seats": null, // the seats of the tickets in the cart
+ *   "event": null, // the event name
+ *   "venue": null, //  the venue name
+ *   "quantity": null, // the quantity of tickets in the cart
+ *   "currency": null, // the currency of the cart (USD, CAD, etc)
+ *   "total": null, // the total of the cart
+ *   "fees": null, // the fees of the cart
+ *   "tax": null, // the tax of the cart
+ *   "costPerTicket": null, // the cost per seat of the cart (to be renamed to costPerSeat)
+ *   "dateTime": null, // the date and time of the event
+ *   "oddEven": false, // this is a flag that indicates that the tickets are odd/even
+ *   "deliveryMethod": null, // the delivery method of the cart
+ *   "isInsured": null, // this is a flag that indicates that the cart is insured
+ *   "marketplace": null, // the marketplace that the cart was sent from
+ *   "feeAndCostPerTicket": null, // the fees and cost per seat of the cart (to be renamed to feeAndCostPerSeat)
+ *   "ticketType": null, // the ticket type of the cart
+ *   "feesPerTicket": null // the fees per seat of the cart (to be renamed to feesPerSeat)
+ * }
+ */
+
+/**
  * This is an example of a service that you would create to send messages to your service
  * the constructor is called with the provider's state object and the jancy object
  */
@@ -195,9 +226,11 @@ class MyMessageAPI extends EventEmitter {
   constructor(jancy) {
     super()
     this.jancy = jancy
+    this.carts = []
   }
   sendCart({key}, {cart, wantsResponse}) {
     console.log('cart sent to with key', key)
+    this.carts.push(cart)
     if (wantsResponse) {
       this.emit('cartResponse', cart, true, 'some user')
     }
@@ -206,10 +239,12 @@ class MyMessageAPI extends EventEmitter {
     console.log('test sent')
   }
   bumpCart(cart_id) {
-    console.log('cart bumped')
+    let cart = this.carts.find(c => c.uuid === cart_id)
+    console.log('cart bumped', cart)
   }
   expireCart(cart_id) {
-    console.log('cart expired')
+    let cart = this.carts.find(c => c.uuid === cart_id)
+    console.log('cart expired', cart)
   }
 
 }
