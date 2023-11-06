@@ -102,6 +102,7 @@ class MyNamathExampleProvider {
       respFunction(cart, isApproved, respondingUser, false)
     })
     myMessageAPI.sendCart({key:this.key}, args)
+    return true
   }
   /** Return an object that can be fed back into the constructor to
   * recreate this provider. This is needed to restore the provider 
