@@ -253,8 +253,7 @@ class MyMessageAPI extends EventEmitter {
 module.exports = {
 
   jancy_props: {
-    registryVersion: 1,
-    canDisable: false
+    registryVersion: 1
   },
 
   /* --------------------------------------------------------------------------
