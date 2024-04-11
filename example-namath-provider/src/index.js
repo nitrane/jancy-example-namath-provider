@@ -11,10 +11,7 @@ const MyNamathExampleProviderFactory = {
   },
   addProvider(jancy, browserWindow) {
     providerDialog(jancy, browserWindow)
-  },
-  editProvider(jancy, browserWindow, provider) {
-    providerDialog(jancy, browserWindow, provider)
-  }
+  }  
 }
 
 /**
@@ -118,7 +115,13 @@ class MyNamathExampleProvider {
   test() {
     myMessageAPI.sendTest()
   }
-  
+  editProvider(jancy, browserWindow, provider) {
+    if (!provider) {
+      console.error('No provider to edit')
+      return
+    }
+    providerDialog(jancy, browserWindow, provider, true)
+  }
 }
 
 /**
@@ -131,7 +134,7 @@ class MyNamathExampleProvider {
  * @param {*} provider (NamathProvider): optional - for editing an existing provider (namath isn't ready for this yet)
  */
 
-function providerDialog (jancy, browserWindow, provider=null) {
+function providerDialog (jancy, browserWindow, provider=null, edit=false) {
 
   let providerWindow = this.jancy.dialogFactory.create(
     browserWindow,
@@ -159,7 +162,13 @@ function providerDialog (jancy, browserWindow, provider=null) {
     const namath = jancy.getInterface('namathAPI')
     if (namath) {
       console.log(args)
-      namath.createProvider(MyNamathExampleProviderFactory, args)
+      if (edit) {
+        Object.assign(provider, args)
+        namath.editProvider(provider)
+      }
+      else {
+        namath.createProvider(MyNamathExampleProviderFactory, args)
+      }
     }
   })
 
@@ -220,6 +229,29 @@ function providerDialog (jancy, browserWindow, provider=null) {
 
     providerWindow.webContents.executeJavaScript(code)
     providerWindow.show()
+  })
+}
+function editProviderDialog(jancy, browserWindow, provider) {
+  let title = 'Edit a MyExample Namath Channel'
+  let confirmText = 'Save Provider'
+
+  discordBotsAPI.openDiscordChooser(confirmText, 'namath', title, provider).then((args) => {
+    args.bot_uuid = args.uuid
+    const namath = jancy.getInterface('namathAPI')
+    if (namath) {
+      provider.name = args.providerName
+      provider.channel_name = args.channel_name
+      provider.server_name = args.server_name
+      provider.channel_id = args.channel_id
+      provider.server_id = args.server_id
+      provider.client_id = args.client_id
+      provider.formatter_name = args.formatter_name
+      provider.default_layout = args.default_layout
+      provider.bot_uuid = args.uuid
+
+      namath.editProvider(provider)
+    }
+  }).catch(e => { 
   })
 }
 class MyMessageAPI extends EventEmitter {
