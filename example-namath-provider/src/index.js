@@ -197,7 +197,7 @@ function providerDialog (jancy, browserWindow, provider=null, edit=false) {
         </div>
         <div class="inline-block">
           <label class="input-label">Name</label>
-          <input class="input-textfield" name="providerName" value="${ provider ? provider.providerName : ""}" />
+          <input class="input-textfield" name="providerName" value="${ provider ? provider.name : ""}" />
         </div>
         <div class="inline-block button-container">
           <button class="button" onclick="window.close()">Cancel</button>
@@ -229,29 +229,6 @@ function providerDialog (jancy, browserWindow, provider=null, edit=false) {
 
     providerWindow.webContents.executeJavaScript(code)
     providerWindow.show()
-  })
-}
-function editProviderDialog(jancy, browserWindow, provider) {
-  let title = 'Edit a MyExample Namath Channel'
-  let confirmText = 'Save Provider'
-
-  discordBotsAPI.openDiscordChooser(confirmText, 'namath', title, provider).then((args) => {
-    args.bot_uuid = args.uuid
-    const namath = jancy.getInterface('namathAPI')
-    if (namath) {
-      provider.name = args.providerName
-      provider.channel_name = args.channel_name
-      provider.server_name = args.server_name
-      provider.channel_id = args.channel_id
-      provider.server_id = args.server_id
-      provider.client_id = args.client_id
-      provider.formatter_name = args.formatter_name
-      provider.default_layout = args.default_layout
-      provider.bot_uuid = args.uuid
-
-      namath.editProvider(provider)
-    }
-  }).catch(e => { 
   })
 }
 class MyMessageAPI extends EventEmitter {
