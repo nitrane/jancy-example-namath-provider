@@ -13,7 +13,7 @@
 3. Restart Jancy if it's already running.
 4. If everything works correctly you should see the example plugin in the list of plugins in `File -> Settings -> Plugins`.
 5. Go to the Namath settings panel (`File -> Setting -> Namath`)
-6. Click the + button and select the "Create a Namath Instance that sends to MyNamathExample" option
+6. Click the + button and select the "Create a Namath Instance that sends Carts to MyNamathExample" option
 7. In the dialog that appears type in a Key and a Name. You will have to edit the dialog code to have the fields you want for your setup.
 8. Press the "Add" button.
 9. If all works correctly, you should see an entry for the provider instance you just created. You can press the test button to see if it works
@@ -24,10 +24,6 @@
 ## Cart
 
 The cart is an object the you will be using to get the data for your service
-### Properties that will change in 1.4.6
-* `feesPerTicket` will be renamed to `feesPerSeat` to more accurately communicate what it is
-* `feeAndCostPerTicket` will be renamed to `feeAndCostPerSeat` to more accurately communicate what it is
-* `costPerTicket` will be renamed to `costPerSeat` to more accurately communicate what it is
 ### Properties
 
 #### uuid
@@ -38,6 +34,10 @@ Whether or not the cart has been approved.
 Whether or not the cart is waiting to be processed.
 #### cartUpdated
 The timestamp of the last time the cart was updated.
+#### cartCreatedTime
+The timestamp of the time the cart was created.
+#### cartExpirationTime
+The time when the cart will expire. It is calculated based on the page we are on.
 #### fieldColors
 An object that maps field names to colors. Mostly used internally, but you can use it.
 #### tab

@@ -3,10 +3,10 @@ let myMessageAPI = null
 
 const MyNamathExampleProviderFactory = {
   id: '69c30bd7-0ae7-4d2e-9517-69414d850a42', //generate a uuid that you want
-  description: 'Create a Namath Instance that sends to MyNamathExample', //this text shows up in Namath when users click the '+' button to add a provider
+  description: 'Create a Namath Instance that sends Carts to MyNamathExample', //this text shows up in Namath when users click the '+' button to add a provider
   showFactoriesToUser: true,
   persistProviders: true,
-  createProvider(jancy, state=null) {
+  createProvider(jancy, state={}) {
     return new MyNamathExampleProvider(jancy, state)
   },
   addProvider(jancy, browserWindow) {
@@ -21,6 +21,8 @@ const MyNamathExampleProviderFactory = {
  *   "isApproved": null, // this is a flag that indicates that the cart has been approved by the quarterback
  *   "isWaiting": true, // this is a flag that indicates that the cart is waiting for a response from the quarterback
  *   "cartUpdated": new Date(), // this is a date object that indicates when the cart was last updated
+ *   "cartCreatedTime": new Date(), // this is a date object that indicates when the cart was created
+ *   "cartExpirationTime": new Date(), // this is a date object that indicates when the cart will expire
  *   "fieldColors": {}, // this is an object that contains the colors of the fields in the cart, mostly internal
  *   "tab": "d7700243", // this is the tab id that the cart was sent from
  *   "row": null, //  the rows of the tickets in the cart
@@ -56,6 +58,7 @@ class MyNamathExampleProvider {
     this.name = providerName || `This example name`
     this.key = key //could be a key or token, but you are in control of these variables
     this.instance_id = instance_id
+    this.type = 0 //this is a type that is used to identify the provider
   }
   getName() {
     return this.name
@@ -109,11 +112,9 @@ class MyNamathExampleProvider {
     return  {
       providerName: this.name,
       key: this.key,
-      instance_id: this.instance_id
+      instance_id: this.instance_id,
+      type: this.type
     }
-  }
-  test() {
-    myMessageAPI.sendTest()
   }
   editProvider(jancy, browserWindow, provider) {
     if (!provider) {
@@ -231,6 +232,13 @@ function providerDialog (jancy, browserWindow, provider=null, edit=false) {
     providerWindow.show()
   })
 }
+/**
+ * This is an example of a class that you would create to send messages to your service. E.G. this is
+ * what talks to Discord or Slack or whatever service you are trying to send messages to.
+ * 
+ * The instance of your Provider you create can call this to send messages to your service.
+ * Alternatively, you can just call your service from your Provider directly.
+ */
 class MyMessageAPI extends EventEmitter {
   
   constructor(jancy) {
@@ -244,9 +252,6 @@ class MyMessageAPI extends EventEmitter {
     if (wantsResponse) {
       this.emit('cartResponse', cart, true, 'some user')
     }
-  }
-  sendTest() {
-    console.log('test sent')
   }
   bumpCart(cart_id) {
     let cart = this.carts.find(c => c.uuid === cart_id)
@@ -272,15 +277,9 @@ module.exports = {
     
     myMessageAPI = new MyMessageAPI(jancy)
 
-    //check to see if namath is ready to add this provider factory
-    const namath_check = setInterval(() => {
-      const namath = jancy.getInterface('namathAPI')
-      if (namath) {
-        namath.addFactory(MyNamathExampleProviderFactory)
-        clearInterval(namath_check)
-      }
-      
-    }, 500);
+    jancy.getInterfaceAsync('namathAPI').then((namath) => {
+        namath.addFactory(MyNamathExampleProviderFactory)      
+    })
 
     jancy.registerInterface('myMessageAPI', myMessageAPI)
   },
